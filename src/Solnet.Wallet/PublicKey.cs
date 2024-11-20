@@ -148,7 +148,7 @@ namespace Solnet.Wallet
         /// </summary>
         /// <param name="address">The base-58 encoded public key.</param>
         /// <returns>The PublicKey object.</returns>
-        public static explicit operator PublicKey(string address) => new(address);
+        public static implicit operator PublicKey(string address) => new(address);
 
         /// <summary>
         /// Conversion between a <see cref="PublicKey"/> object and the public key as a byte array.

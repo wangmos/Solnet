@@ -133,13 +133,25 @@ namespace Solnet.Rpc.Models
         /// <param name="signers">The signer accounts.</param>
         public bool Sign(IList<Account> signers)
         {
+            var fix = Signatures?.Count > 0;
+
             Signatures ??= new List<SignaturePubKeyPair>();
             IEnumerable<Account> uniqueSigners = DeduplicateSigners(signers);
             byte[] serializedMessage = CompileMessage();
 
+            var i = 0;
             foreach (Account account in uniqueSigners)
             {
                 byte[] signatureBytes = account.Sign(serializedMessage);
+
+                if (fix)
+                {
+                    if (i < Signatures.Count)
+                    {
+                        Signatures[i++].Signature = signatureBytes;
+                        continue;
+                    }
+                }
                 Signatures.Add(new SignaturePubKeyPair { PublicKey = account.PublicKey, Signature = signatureBytes });
             }
 

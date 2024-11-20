@@ -86,7 +86,7 @@ namespace Solnet.Rpc.Core.Http
                 // create byte buffer to avoid charset=utf-8 in content-type header
                 // as this is rejected by some RPC nodes
                 var buffer = Encoding.UTF8.GetBytes(requestJson);
-                using var httpReq = new HttpRequestMessage(HttpMethod.Post, (string)null)
+                using var httpReq = new HttpRequestMessage(HttpMethod.Post, NodeAddress)
                 {
                     Content = new ByteArrayContent(buffer)
                     {
@@ -196,7 +196,7 @@ namespace Solnet.Rpc.Core.Http
                 // create byte buffer to avoid charset=utf-8 in content-type header
                 // as this is rejected by some RPC nodes
                 var buffer = Encoding.UTF8.GetBytes(requestsJson);
-                using var httpReq = new HttpRequestMessage(HttpMethod.Post, (string)null)
+                using var httpReq = new HttpRequestMessage(HttpMethod.Post, NodeAddress)
                 {
                     Content = new ByteArrayContent(buffer)
                     {
