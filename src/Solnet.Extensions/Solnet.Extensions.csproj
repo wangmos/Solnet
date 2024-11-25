@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Solnet.Programs\Solnet.Programs.csproj" />
     <ProjectReference Include="..\Solnet.Rpc\Solnet.Rpc.csproj" />
     <ProjectReference Include="..\Solnet.Wallet\Solnet.Wallet.csproj" />
