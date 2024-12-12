@@ -1,5 +1,6 @@
 ﻿using Solnet.Rpc.Builders;
 using Solnet.Rpc.Utilities;
+using Solnet.Wallet.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,6 +116,32 @@ namespace Solnet.Rpc.Models
         /// <returns>The Transaction object.</returns>
         public static new VersionedTransaction Populate(string message, IList<byte[]> signatures = null)
             => Populate(VersionedMessage.Deserialize(message), signatures);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static string GetDeserializeSignature(ReadOnlySpan<byte> data)
+        {
+            // Read number of signatures
+            (int signaturesLength, int encodedLength) =
+                ShortVectorEncoding.DecodeLength(data[..ShortVectorEncoding.SpanLength]);
+            List<byte[]> signatures = new(signaturesLength);
+
+            for (int i = 0; i < signaturesLength; i++)
+            {
+                ReadOnlySpan<byte> signature =
+                    data.Slice(encodedLength + (i * TransactionBuilder.SignatureLength),
+                        TransactionBuilder.SignatureLength);
+                signatures.Add(signature.ToArray());
+            }
+
+            if (signatures.Count > 0) return new Base58Encoder().EncodeData(signatures[0]);
+
+            return "";
+        }
+
 
         /// <summary>
         /// Deserialize a wire format transaction into a Transaction object.
